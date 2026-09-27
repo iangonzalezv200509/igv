@@ -130,9 +130,6 @@ elif opcion == "Contacto":
         enviado = st.form_submit_button("Enviar Mensaje")
         if enviado:
             if nombre and email and mensaje:
-                st.success(
-                    "¡Gracias por contactarme! Te responderé a la brevedad."
-                )
+                st.success("¡Gracias por contactarme! Te responderé a la brevedad.")
             else:
                 st.warning("Por favor, completa todos los campos del formulario.")
-                
