@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Estilos CSS limpios y legibles para tonos claros y verdes
+# 2. Estilos CSS adaptados a tonos claros y verdes con bordes redondeados
 st.markdown("""
     <style>
     /* Fondo general claro */
@@ -61,13 +61,13 @@ st.markdown("""
         color: #4B5563 !important;
     }
 
-    /* Nombre Título Grande */
+    /* Encabezado Principal Arriba de Todo */
     .main-header {
         font-size: 3.2rem;
         font-weight: 800;
         color: #111827;
         letter-spacing: -0.5px;
-        margin-top: 5px;
+        margin-top: 0px;
         margin-bottom: 0px;
         line-height: 1.1;
     }
@@ -76,34 +76,35 @@ st.markdown("""
         font-size: 1.4rem;
         font-weight: 600;
         color: #059669;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
 
-    /* Rediseño total de pestañas (Tabs arriba del todo, 100% legibles sobre blanco/crema) */
+    /* Rediseño de pestañas con bordes completamente redondeados */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 12px;
+        gap: 10px;
         background-color: #EFEAE4;
-        padding: 8px 12px;
-        border-radius: 12px;
+        padding: 8px;
+        border-radius: 30px !important;
         border: 1px solid #E2DCD5;
         margin-bottom: 25px;
     }
 
     .stTabs [data-baseweb="tab"] {
-        height: 46px;
-        background-color: #FFFFFF !important;
-        border: 1px solid #D1D5DB !important;
-        border-radius: 8px !important;
+        height: 44px;
+        background-color: transparent !important;
+        border: none !important;
+        border-radius: 20px !important;
         color: #1F2937 !important;
         font-size: 1.05rem !important;
         font-weight: 700 !important;
-        padding: 0px 20px !important;
+        padding: 0px 22px !important;
+        transition: all 0.2s ease;
     }
 
     .stTabs [aria-selected="true"] {
         background-color: #10B981 !important;
         color: #FFFFFF !important;
-        border-color: #10B981 !important;
+        border-radius: 20px !important;
         box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25) !important;
     }
 
@@ -134,7 +135,7 @@ st.markdown("""
         background-color: #FFFFFF;
         border: 1px solid #E5E7EB;
         border-left: 5px solid #10B981;
-        border-radius: 10px;
+        border-radius: 12px;
         padding: 22px;
         text-align: center;
         box-shadow: 0 4px 10px rgba(0,0,0,0.03);
@@ -159,7 +160,7 @@ st.markdown("""
         background-color: #10B981 !important;
         color: #FFFFFF !important;
         border: none !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         padding: 14px 20px !important;
         font-size: 1.1rem !important;
         font-weight: 700 !important;
@@ -174,7 +175,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 3. Sidebar (Perfil centrado con botón verde claro llamativo)
+# 3. Sidebar (Perfil centrado)
 with st.sidebar:
     st.markdown('<p class="profile-title">Perfil Profesional</p>', unsafe_allow_html=True)
     
@@ -199,7 +200,11 @@ with st.sidebar:
         mime="application/pdf"
     )
 
-# 4. Pestañas Integradas en la parte superior
+# 4. Encabezado Principal (Ubicado ARRIBA DE TODO)
+st.markdown('<p class="main-header">Ian González Viña</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Backend Software Engineer & Problem Solver</p>', unsafe_allow_html=True)
+
+# 5. Pestañas Redondeadas (Ubicadas DEBAJO del encabezado principal)
 tab1, tab2, tab3, tab4 = st.tabs([
     "Resumen Profesional", 
     "Habilidades Técnicas", 
@@ -207,13 +212,9 @@ tab1, tab2, tab3, tab4 = st.tabs([
     "Contacto"
 ])
 
-# 5. Encabezado Principal
-st.markdown('<p class="main-header">Ian González Viña</p>', unsafe_allow_html=True)
-st.markdown('<p class="sub-header">Backend Software Engineer & Problem Solver</p>', unsafe_allow_html=True)
-
 st.divider()
 
-# 6. Contenido distribuido por pestañas
+# 6. Contenido según la pestaña seleccionada
 with tab1:
     col_main, col_metrics = st.columns([2.2, 1], gap="large")
 
