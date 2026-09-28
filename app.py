@@ -1,302 +1,270 @@
-from pathlib import Path
 import streamlit as st
 
-# ---------------------------------------------------------
-# 1. CONFIGURACIÓN INICIAL DE LA PÁGINA
-# ---------------------------------------------------------
+# 1. Configuración de la página
 st.set_page_config(
-    page_title="Ian González | Backend Developer Portfolio",
-    page_icon="⚡",
+    page_title="Ian González Viña - Backend Software Engineer",
+    page_icon="💼",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="expanded"
 )
 
-# ---------------------------------------------------------
-# 2. ESTILOS CSS PERSONALIZADOS (Diseño Moderno)
-# ---------------------------------------------------------
-st.markdown(
-    """
+# 2. Estilos CSS limpios y legibles para tonos claros y verdes
+st.markdown("""
     <style>
-    /* Fondo principal y fuentes */
+    /* Fondo general claro */
     .stApp {
-        background-color: #0E1117;
+        background-color: #FAF8F5;
+        color: #111827;
+        font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
     }
     
-    /* Títulos y Subtítulos con degradado */
-    .gradient-header {
-        font-weight: 800;
-        background: linear-gradient(90deg, #00ADB5 0%, #393E46 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-bottom: 0.5rem;
+    /* Fondo e Integración del Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #F3EFEA;
+        border-right: 1px solid #E2DCD5;
+    }
+    
+    .profile-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-    /* Tarjetas de Métricas Personalizadas */
-    .metric-card {
-        background-color: #1E232A;
-        border: 1px solid #30363D;
-        border-radius: 10px;
-        padding: 1.2rem;
+    .profile-title {
+        font-size: 1.35rem !important;
+        font-weight: 700 !important;
+        color: #111827 !important;
+        width: 100%;
         text-align: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+    }
+
+    .profile-name {
+        font-size: 1.35rem !important;
+        font-weight: 700 !important;
+        color: #111827 !important;
+        margin-top: 14px;
+        margin-bottom: 2px;
+    }
+
+    .profile-role {
+        font-size: 1.05rem !important;
+        font-weight: 600 !important;
+        color: #059669 !important;
+        margin-bottom: 4px;
+    }
+
+    .profile-location {
+        font-size: 1rem !important;
+        color: #4B5563 !important;
+    }
+
+    /* Nombre Título Grande */
+    .main-header {
+        font-size: 3.2rem;
+        font-weight: 800;
+        color: #111827;
+        letter-spacing: -0.5px;
+        margin-top: 5px;
+        margin-bottom: 0px;
+        line-height: 1.1;
     }
     
-    /* Badges de Tecnologías */
-    .tech-badge {
-        display: inline-block;
-        background-color: #262730;
-        color: #00ADB5;
-        border: 1px solid #00ADB5;
-        border-radius: 15px;
-        padding: 3px 10px;
-        font-size: 0.8rem;
+    .sub-header {
+        font-size: 1.4rem;
         font-weight: 600;
-        margin-right: 5px;
+        color: #059669;
+        margin-bottom: 25px;
+    }
+
+    /* Rediseño total de pestañas (Tabs arriba del todo, 100% legibles sobre blanco/crema) */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 12px;
+        background-color: #EFEAE4;
+        padding: 8px 12px;
+        border-radius: 12px;
+        border: 1px solid #E2DCD5;
+        margin-bottom: 25px;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        height: 46px;
+        background-color: #FFFFFF !important;
+        border: 1px solid #D1D5DB !important;
+        border-radius: 8px !important;
+        color: #1F2937 !important;
+        font-size: 1.05rem !important;
+        font-weight: 700 !important;
+        padding: 0px 20px !important;
+    }
+
+    .stTabs [aria-selected="true"] {
+        background-color: #10B981 !important;
+        color: #FFFFFF !important;
+        border-color: #10B981 !important;
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25) !important;
+    }
+
+    /* Píldoras de código */
+    code {
+        background-color: #ECFDF5 !important;
+        color: #065F46 !important;
+        border: 1px solid #A7F3D0 !important;
+        padding: 3px 8px !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+    }
+
+    p, li, span {
+        font-size: 1.15rem !important;
+        color: #1F2937 !important;
+        line-height: 1.6;
+    }
+
+    h4 {
+        font-size: 1.5rem !important;
+        font-weight: 700 !important;
+        color: #111827 !important;
+    }
+
+    /* Tarjetas de métricas */
+    .metric-card {
+        background-color: #FFFFFF;
+        border: 1px solid #E5E7EB;
+        border-left: 5px solid #10B981;
+        border-radius: 10px;
+        padding: 22px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+    
+    .metric-value {
+        font-size: 2.8rem;
+        font-weight: 800;
+        color: #059669;
+    }
+    
+    .metric-label {
+        font-size: 1.05rem;
+        color: #374151;
         margin-top: 5px;
+        font-weight: 600;
+    }
+    
+    /* Botón de descarga de CV */
+    .stDownloadButton > button {
+        width: 100%;
+        background-color: #10B981 !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 14px 20px !important;
+        font-size: 1.1rem !important;
+        font-weight: 700 !important;
+        box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .stDownloadButton > button:hover {
+        background-color: #059669 !important;
+        color: #FFFFFF !important;
     }
     </style>
-""",
-    unsafe_allow_html=True,
-)
+""", unsafe_allow_html=True)
 
-# ---------------------------------------------------------
-# 3. DATOS DE PROYECTOS (Lógica de Datos Decoupled)
-# ---------------------------------------------------------
-PROYECTOS = [
-    {
-        "nombre": "AI-Powered Server Diagnostics",
-        "categoria": "Backend / IA",
-        "descripcion": "Análisis automatizado y diagnóstico de logs de servidores Apache y políticas SELinux mediante inteligencia artificial.",
-        "tecnologias": ["Python", "AI APIs", "Linux", "Log Parsing"],
-        "link": "https://github.com/iangonzalezv200509/igv",
-        "destacado": True,
-    },
-    {
-        "nombre": "Data Analytics Interactive Platform",
-        "categoria": "Data / Analytics",
-        "descripcion": "Plataforma web interactiva para procesamiento de estructuras de datos masivas y métricas estadísticas en tiempo real.",
-        "tecnologias": ["Python", "Streamlit", "Pandas", "NumPy"],
-        "link": "https://github.com/iangonzalezv200509/igv",
-        "destacado": False,
-    },
-]
-
-# ---------------------------------------------------------
-# 4. BARRA LATERAL (Sidebar & Branding)
-# ---------------------------------------------------------
+# 3. Sidebar (Perfil centrado con botón verde claro llamativo)
 with st.sidebar:
-    st.image(
-        "https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=90
+    st.markdown('<p class="profile-title">Perfil Profesional</p>', unsafe_allow_html=True)
+    
+    col_a, col_img, col_b = st.columns([1, 4, 1])
+    with col_img:
+        st.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", use_container_width=True)
+    
+    st.markdown("""
+        <div class="profile-container">
+            <div class="profile-name">Ian González Viña</div>
+            <div class="profile-role">Backend Software Engineer</div>
+            <div class="profile-location">📍 Argentina</div>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.divider()
+    
+    st.download_button(
+        label="📄 Descargar CV Profesional",
+        data="Contenido del CV...",
+        file_name="CV_Ian_Gonzalez_Vina.pdf",
+        mime="application/pdf"
     )
-    st.title("Ian González")
-    st.caption("🚀 Junior Backend Software Engineer")
-    st.write("📍 Argentina")
 
-    st.markdown("---")
+# 4. Pestañas Integradas en la parte superior
+tab1, tab2, tab3, tab4 = st.tabs([
+    "Resumen Profesional", 
+    "Habilidades Técnicas", 
+    "Proyectos Destacados", 
+    "Contacto"
+])
 
-    seccion = st.radio(
-        "Navegación del sitio:",
-        [
-            "🏠 Sobre Mí",
-            "🛠️ Habilidades Técnicas",
-            "📂 Proyectos",
-            "📬 Contacto",
-        ],
-    )
+# 5. Encabezado Principal
+st.markdown('<p class="main-header">Ian González Viña</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-header">Backend Software Engineer & Problem Solver</p>', unsafe_allow_html=True)
 
-    st.markdown("---")
+st.divider()
 
-    # Gestión de descarga de CV con Pathlib
-    cv_path = Path("CV digital IGV.pdf")
-    if cv_path.exists():
-        with open(cv_path, "rb") as pdf_file:
-            st.download_button(
-                label="📄 Descargar CV Profesional",
-                data=pdf_file,
-                file_name="CV_Ian_Gonzalez_Backend.pdf",
-                mime="application/pdf",
-                use_container_width=True,
-            )
-    else:
-        st.warning("⚠️ Archivo 'CV digital IGV.pdf' no encontrado.")
+# 6. Contenido distribuido por pestañas
+with tab1:
+    col_main, col_metrics = st.columns([2.2, 1], gap="large")
 
-# ---------------------------------------------------------
-# 5. SECCIÓN 1: SOBRE MÍ
-# ---------------------------------------------------------
-if seccion == "🏠 Sobre Mí":
-    st.markdown(
-        "<h1 class='gradient-header'>Ian González</h1>", unsafe_allow_html=True
-    )
-    st.subheader("Backend Software Engineer & Problem Solver")
-
-    col_perfil, col_metrics = st.columns([2, 1], gap="large")
-
-    with col_perfil:
-        st.markdown("""
-        Desarrollador de software enfocado en **arquitectura backend**, desarrollo en **Python**, y gestión eficiente de **bases de datos SQL**. 
+    with col_main:
+        st.markdown("#### Sobre Mí")
+        st.write("""
+        Desarrollador de software enfocado en **arquitectura backend**, desarrollo en **Python**, 
+        y gestión eficiente de **bases de datos SQL**.
         
-        Apasionado por la optimización de código, automatización de procesos y el diagnóstico de infraestructura de servidores. Experiencia práctica construyendo herramientas interactivas, integración de APIs y gestión de entornos virtuales en entornos de desarrollo modernos (`Git`, `VS Code`, `PowerShell`).
+        Apasionado por la optimización de código, automatización de procesos y el diagnóstico 
+        de infraestructura de servidores. Experiencia práctica construyendo herramientas interactivas, 
+        integración de APIs y gestión de entornos virtuales en entornos de desarrollo modernos (`Git`, `VS Code`, `PowerShell`).
         """)
-
-        st.markdown("### 🎯 Objetivos Clave")
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown("#### Objetivos Clave")
+        
         st.markdown("""
-        - 🔹 Diseñar e implementar APIs RESTful escalables y robustas.
-        - 🔹 Optimizar consultas a bases de datos relacionales.
-        - 🔹 Continuar integrando servicios de Inteligencia Artificial al diagnóstico de software.
+        * **Diseño e implementación:** APIs RESTful escalables, seguras y robustas.
+        * **Optimización:** Consultas avanzadas a bases de datos relacionales.
+        * **Integración:** Incorporación de servicios de Inteligencia Artificial para diagnóstico y análisis de software.
         """)
 
     with col_metrics:
-        st.markdown("### Métricas de Impacto")
+        st.markdown("#### Métricas de Impacto")
+        
+        st.markdown("""
+            <div class="metric-card">
+                <div class="metric-value">5+</div>
+                <div class="metric-label">Proyectos Desarrollados</div>
+            </div>
+            <br>
+            <div class="metric-card">
+                <div class="metric-value">100%</div>
+                <div class="metric-label">Código Modular en Python</div>
+            </div>
+        """, unsafe_allow_html=True)
 
-        st.markdown(
-            """
-        <div class='metric-card'>
-            <h2 style='color:#00ADB5; margin:0;'>5+</h2>
-            <p style='margin:0; font-size:0.9rem;'>Proyectos Desarrollados</p>
-        </div>
-        <br>
-        <div class='metric-card'>
-            <h2 style='color:#00ADB5; margin:0;'>100%</h2>
-            <p style='margin:0; font-size:0.9rem;'>Código Modular en Python</p>
-        </div>
-        """,
-            unsafe_allow_html=True,
-        )
+with tab2:
+    st.markdown("#### Competencias y Tecnologías Core")
+    st.write("• **Lenguajes:** Python, SQL, Bash / PowerShell")
+    st.write("• **Frameworks & Herramientas:** Streamlit, Pandas, NumPy, Git, GitHub")
+    st.write("• **Entornos & Despliegue:** Virtualenv, Streamlit Cloud, Linux Server Diagnostics")
 
-# ---------------------------------------------------------
-# 6. SECCIÓN 2: HABILIDADES TÉCNICAS
-# ---------------------------------------------------------
-elif seccion == "🛠️ Habilidades Técnicas":
-    st.markdown(
-        "<h1 class='gradient-header'>Habilidades Técnicas</h1>",
-        unsafe_allow_html=True,
-    )
-    st.write(
-        "Herramientas y tecnologías que utilizo para la construcción de software backend:"
-    )
+with tab3:
+    st.markdown("#### Portafolio de Proyectos Backend")
+    st.info("Visualización e interacción con proyectos recientes en producción.")
 
-    col1, col2 = st.columns(2, gap="large")
-
-    with col1:
-        st.subheader("Core Backend & Lenguajes")
-
-        st.write("**Python 3 (Avanzado)**")
-        st.progress(85)
-        st.caption(
-            "Estructuras de datos, POO, Manejo de excepciones, Modularización."
-        )
-
-        st.write("**SQL & Bases de Datos Relacionales**")
-        st.progress(75)
-        st.caption(
-            "Consultas complejas, diseño de esquemas, relaciones y filtrado."
-        )
-
-        st.write("**Data Analysis (Pandas / NumPy)**")
-        st.progress(70)
-        st.caption("Manipulación, limpieza y estructuración de sets de datos.")
-
-    with col2:
-        st.subheader("Herramientas & Entornos")
-
-        st.write("**Control de Versiones (Git & GitHub)**")
-        st.progress(85)
-        st.caption("Flujos de trabajo con ramas, merges y despliegues remotos.")
-
-        st.write("**Entornos de Desarrollo (VS Code / Virtualenv)**")
-        st.progress(90)
-        st.caption("Configuración de virtual environments, pip, PowerShell.")
-
-        st.write("**Diagnóstico & Servidores (Linux / Apache)**")
-        st.progress(65)
-        st.caption("Análisis de logs de servidor y permisos/políticas SELinux.")
-
-# ---------------------------------------------------------
-# 7. SECCIÓN 3: PROYECTOS DESTACADOS
-# ---------------------------------------------------------
-elif seccion == "📂 Proyectos":
-    st.markdown(
-        "<h1 class='gradient-header'>Proyectos Destacados</h1>",
-        unsafe_allow_html=True,
-    )
-    st.write(
-        "Explora los desarrollos y casos de estudio que he publicado e implementado:"
-    )
-
-    # Filtros
-    categorias = ["Todos", "Backend / IA", "Data / Analytics"]
-    cat_seleccionada = st.pills(
-        "Filtrar por categoría:", categorias, default="Todos"
-    )
-
-    st.markdown("---")
-
-    # Renderizado de Tarjetas de Proyectos
-    for p in PROYECTOS:
-        if cat_seleccionada == "Todos" or p["categoria"] == cat_seleccionada:
-            with st.container(border=True):
-                col_info, col_link = st.columns([3, 1])
-
-                with col_info:
-                    st.subheader(p["nombre"])
-                    st.write(p["descripcion"])
-
-                    # Render de badges
-                    badges_html = "".join(
-                        [
-                            f"<span class='tech-badge'>{tech}</span>"
-                            for tech in p["tecnologias"]
-                        ]
-                    )
-                    st.markdown(badges_html, unsafe_allow_html=True)
-
-                with col_link:
-                    st.write("")
-                    st.write("")
-                    st.link_button("🔗 Ver Código / Repo", p["link"])
-
-# ---------------------------------------------------------
-# 8. SECCIÓN 4: FORMULARIO DE CONTACTO
-# ---------------------------------------------------------
-elif seccion == "📬 Contacto":
-    st.markdown(
-        "<h1 class='gradient-header'>Contacto Directo</h1>",
-        unsafe_allow_html=True,
-    )
-    st.write(
-        "¿Tienes una propuesta laboral o consulta técnica? Envíame un mensaje directo:"
-    )
-
-    col_form, col_info = st.columns([2, 1], gap="large")
-
-    with col_form:
-        with st.form("form_contacto_profesional", clear_on_submit=True):
-            nombre = st.text_input("Nombre completo")
-            email = st.text_input("Correo electrónico")
-            mensaje = st.text_area("Mensaje o Consulta", height=120)
-
-            submitted = st.form_submit_button(
-                "🚀 Enviar Mensaje", use_container_width=True
-            )
-
-            if submitted:
-                if nombre and email and mensaje:
-                    if "@" in email and "." in email:
-                        st.toast("¡Mensaje enviado con éxito!", icon="✅")
-                        st.success(
-                            f"Gracias {nombre}, he recibido tu mensaje. Me pondré en contacto contigo a través de {email} a la brevedad."
-                        )
-                    else:
-                        st.error(
-                            "Por favor, ingresa un correo electrónico válido."
-                        )
-                else:
-                    st.warning(
-                        "Por favor, completa todos los campos requeridos antes de enviar."
-                    )
-
-    with col_info:
-        st.subheader("Información de Contacto")
-        st.write("📂 **GitHub:** [github.com/iangonzalezv200509](https://github.com/iangonzalezv200509)")
-        st.write("💼 **Especialidad:** Backend Software Development")
-        st.write("🌍 **Ubicación:** Argentina")
+with tab4:
+    st.markdown("#### Información de Contacto")
+    st.write("Para oportunidades profesionales o colaboraciones de desarrollo backend:")
+    st.write("• **Email:** iangonzalezv2005@gmail.com")
+    st.write("• **GitHub:** https://github.com/iangonzalezv200509/igv")
+    st.write("• **LinkedIn:** https://www.linkedin.com/in/ian-gonzalez-vi%C3%B1a200509/")
